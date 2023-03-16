@@ -1,0 +1,2 @@
+Terminal command for test (launch from project folder and place all required files in imdb directory):
+cmake-build-debug/cpp_hw1 imdb/title.basics.tsv imdb/title.episode.tsv imdb/title.ratings.tsv imdb/title.akas.tsv 500
