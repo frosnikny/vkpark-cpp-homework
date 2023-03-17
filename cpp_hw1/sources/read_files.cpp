@@ -23,12 +23,12 @@ void Parser::readEpisodes(
     std::istringstream line_stream(line);
     std::getline(line_stream, episode_id, '\t');
     std::getline(line_stream, parent_episode_id, '\t');
-    auto find_serial = serials.find(parent_episode_id);
-    if (find_serial == serials.end()) {
-      find_serial = (serials.emplace(parent_episode_id, TVSerial())).first;
+    auto current_serial = serials.find(parent_episode_id);
+    if (current_serial == serials.end()) {
+      current_serial = (serials.emplace(parent_episode_id, TVSerial())).first;
     }
     episode_durations.emplace(episode_id, 0);
-    find_serial->second.episode_numbers.push_back(episode_id);
+    current_serial->second.episode_numbers.push_back(episode_id);
   }
 }
 
@@ -61,11 +61,11 @@ void Parser::readSerials(
   while (std::getline(file, line)) {
     std::istringstream line_stream(line);
     std::getline(line_stream, item_id, '\t');
-    const auto& serial_find = serials.find(item_id);
-    const auto& episode_find = episode_durations.find(item_id);
-    if (serial_find != serials.end()) {
+    const auto& current_serial = serials.find(item_id);
+    const auto& current_episode = episode_durations.find(item_id);
+    if (current_serial != serials.end()) {
       has_found_serial = true;
-    } else if (episode_find != episode_durations.end()) {
+    } else if (current_episode != episode_durations.end()) {
       has_found_serial = false;
     } else {
       continue;
@@ -78,9 +78,9 @@ void Parser::readSerials(
     std::getline(line_stream, is_adult, '\t');
     if (is_adult == "1") {
       if (has_found_serial) {
-        serials.erase(serial_find);
+        serials.erase(current_serial);
       } else {
-        episode_durations.erase(episode_find);
+        episode_durations.erase(current_episode);
       }
       continue;
     }
@@ -90,11 +90,11 @@ void Parser::readSerials(
     std::getline(line_stream, skip, '\t');
     std::getline(line_stream, runtime_minutes, '\t');
     if (has_found_serial) {
-      serial_find->second.average_episode_duration =
+      current_serial->second.average_episode_duration =
           (runtime_minutes != "\\N") ? std::stoi(runtime_minutes) : 0;
-      serial_find->second.title = primary_title;
+      current_serial->second.title = primary_title;
     } else {
-      episode_find->second =
+      current_episode->second =
           (runtime_minutes != "\\N") ? std::stoi(runtime_minutes) : 0;
     }
   }
@@ -123,8 +123,8 @@ void Parser::readRatings(const std::string& filename,
   while (std::getline(file, line)) {
     std::istringstream line_stream(line);
     std::getline(line_stream, serial_id, '\t');
-    const auto& serial_find = serials.find(serial_id);
-    if (serial_find == serials.end()) {
+    const auto& current_serial = serials.find(serial_id);
+    if (current_serial == serials.end()) {
       continue;
     }
     std::getline(line_stream, average_rating_str, '\t');
@@ -133,9 +133,9 @@ void Parser::readRatings(const std::string& filename,
     std::getline(line_stream, num_votes_str, '\t');
     num_votes = num_votes_str != "\\N" ? std::stoi(num_votes_str) : 0;
     if (num_votes < 1000) {
-      serials.erase(serial_find);
+      serials.erase(current_serial);
     } else {
-      serial_find->second.avg_rating = avg_rating;
+      current_serial->second.avg_rating = avg_rating;
     }
   }
 }
@@ -166,11 +166,11 @@ void Parser::readAkas(const std::string& filename,
   while (std::getline(file, line)) {
     std::istringstream line_stream(line);
     std::getline(line_stream, serial_id, '\t');
-    const auto& serials_fin = std::find_if(
+    const auto& current_serial = std::find_if(
         serials.begin(), serials.end(), [serial_id](const TVSerialPair& item) {
           return item.first == serial_id;
         });
-    if (serials_fin == serials.end()) {
+    if (current_serial == serials.end()) {
       continue;
     }
     // skip "ordering" column
@@ -179,7 +179,7 @@ void Parser::readAkas(const std::string& filename,
     std::getline(line_stream, region, '\t');
     std::getline(line_stream, language, '\t');
     if (region == "RU" || language == "ru") {
-      serials_fin->second.ru_title = translated_title;
+      current_serial->second.ru_title = translated_title;
     }
   }
 }

@@ -15,8 +15,7 @@ void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
                        std::unordered_map<std::string, int>& episode_durations,
                        int max_duration);
 
-bool compareRatings(const TVSerialPair& a,
-                      const TVSerialPair& b);
+bool compareRatings(const TVSerialPair& a, const TVSerialPair& b);
 
 void takeBestRatings(
     const std::unordered_map<std::string, TVSerial>& serials,
@@ -25,9 +24,9 @@ void takeBestRatings(
     int required_number);
 
 void runTask(std::ostream& out, const std::string& basics_filename,
-                 const std::string& episodes_filename,
-                 const std::string& ratings_filename,
-                 const std::string& akas_filename, int max_duration,
-                 int required_bests_number);
+             const std::string& episodes_filename,
+             const std::string& ratings_filename,
+             const std::string& akas_filename, int max_duration,
+             int required_bests_number);
 
 #endif  // CPP_HW1_HEADERS_EXERCISE_HPP

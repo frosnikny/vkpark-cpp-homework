@@ -8,16 +8,17 @@ void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
   for (auto& serial : serials) {
     int summary{0};
     for (const auto& episode_id : serial.second.episode_numbers) {
-      auto map_episode = episode_durations.find(episode_id);
-      if (map_episode == episode_durations.end()) {
+      auto current_episode_duration = episode_durations.find(episode_id);
+      if (current_episode_duration == episode_durations.end()) {
         continue;
       }
-      if (map_episode->second == 0) {
+      if (current_episode_duration->second == 0) {
         // if the duration of the episode isn't found,
         // we take serial's average duration from table instead of it
-        map_episode->second = serial.second.average_episode_duration;
+        current_episode_duration->second =
+            serial.second.average_episode_duration;
       }
-      summary += map_episode->second;
+      summary += current_episode_duration->second;
     }
     if (summary > max_duration || summary == 0) {
       serials_for_delete.push_back(serial.first);
@@ -47,10 +48,10 @@ void takeBestRatings(
 }
 
 void runTask(std::ostream& out, const std::string& basics_filename,
-                 const std::string& episodes_filename,
-                 const std::string& ratings_filename,
-                 const std::string& akas_filename, int max_duration,
-                 int required_bests_number) {
+             const std::string& episodes_filename,
+             const std::string& ratings_filename,
+             const std::string& akas_filename, int max_duration,
+             int required_bests_number) {
   std::unordered_map<std::string, TVSerial> serials{};
   std::unordered_map<std::string, int> episode_durations{};
 
