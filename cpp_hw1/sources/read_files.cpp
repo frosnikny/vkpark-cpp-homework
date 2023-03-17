@@ -1,7 +1,7 @@
 #include "../headers/read_files.hpp"
 
 // function for reading episodes from title.episode.tsv
-void Parser::ReadEpisodes(
+void Parser::readEpisodes(
     const std::string& filename,
     std::unordered_map<std::string, TVSerial>& serials,
     std::unordered_map<std::string, int>& episode_durations) {
@@ -33,7 +33,7 @@ void Parser::ReadEpisodes(
 }
 
 // function for reading info from title.basics.tsv
-void Parser::ReadSerials(
+void Parser::readSerials(
     const std::string& filename,
     std::unordered_map<std::string, TVSerial>& serials,
     std::unordered_map<std::string, int>& episode_durations) {
@@ -101,7 +101,7 @@ void Parser::ReadSerials(
 }
 
 // function for reading ratings from title.ratings.tsv
-void Parser::ReadRatings(const std::string& filename,
+void Parser::readRatings(const std::string& filename,
                          std::unordered_map<std::string, TVSerial>& serials) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {
@@ -141,7 +141,7 @@ void Parser::ReadRatings(const std::string& filename,
 }
 
 // function for reading episodes from title.akas.tsv
-void Parser::ReadAkas(const std::string& filename,
+void Parser::readAkas(const std::string& filename,
                       std::vector<TVSerialPair>& serials) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {

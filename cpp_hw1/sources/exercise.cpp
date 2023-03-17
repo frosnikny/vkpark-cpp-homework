@@ -1,7 +1,7 @@
 #include "../headers/exercise.hpp"
 
 // Count the total duration of all episodes of serials
-void DurationCalculate(std::unordered_map<std::string, TVSerial>& serials,
+void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
                        std::unordered_map<std::string, int>& episode_durations,
                        int max_duration) {
   std::vector<std::string> serials_for_delete{};
@@ -29,14 +29,14 @@ void DurationCalculate(std::unordered_map<std::string, TVSerial>& serials,
   }
 }
 
-bool RatingComparator(const TVSerialPair& a, const TVSerialPair& b) {
+bool compareRatings(const TVSerialPair& a, const TVSerialPair& b) {
   return a.second.avg_rating > b.second.avg_rating;
 }
 
-void TakeBestRatings(
+void takeBestRatings(
     const std::unordered_map<std::string, TVSerial>& serials,
     std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                        decltype(&RatingComparator)>& best_serials_pq,
+                        decltype(&compareRatings)>& best_serials_pq,
     int required_number) {
   for (auto& elem : serials) {
     best_serials_pq.emplace(elem.first, elem.second);
@@ -46,7 +46,7 @@ void TakeBestRatings(
   }
 }
 
-void RunExercise(std::ostream& out, const std::string& basics_filename,
+void runTask(std::ostream& out, const std::string& basics_filename,
                  const std::string& episodes_filename,
                  const std::string& ratings_filename,
                  const std::string& akas_filename, int max_duration,
@@ -55,17 +55,17 @@ void RunExercise(std::ostream& out, const std::string& basics_filename,
   std::unordered_map<std::string, int> episode_durations{};
 
   // Take main information about serials and episodes
-  Parser::ReadEpisodes(episodes_filename, serials, episode_durations);
-  Parser::ReadSerials(basics_filename, serials, episode_durations);
-  DurationCalculate(serials, episode_durations, max_duration);
-  Parser::ReadRatings(ratings_filename, serials);
+  Parser::readEpisodes(episodes_filename, serials, episode_durations);
+  Parser::readSerials(basics_filename, serials, episode_durations);
+  calculateDuration(serials, episode_durations, max_duration);
+  Parser::readRatings(ratings_filename, serials);
 
   // Take required number of the best rating episodes in descending order
   //  typedef std::pair<std::string, TVSerial> TVSerialPair;
   std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                      decltype(&RatingComparator)>
-      best_serials_pq(&RatingComparator);
-  TakeBestRatings(serials, best_serials_pq, required_bests_number);
+                      decltype(&compareRatings)>
+      best_serials_pq(&compareRatings);
+  takeBestRatings(serials, best_serials_pq, required_bests_number);
   std::vector<TVSerialPair> best_serials_vec(required_bests_number);
   for (int i = required_bests_number - 1; i > -1; --i) {
     best_serials_vec[i] = best_serials_pq.top();
@@ -73,7 +73,7 @@ void RunExercise(std::ostream& out, const std::string& basics_filename,
   }
 
   // Take Russian title only for required number of serials
-  Parser::ReadAkas(akas_filename, best_serials_vec);
+  Parser::readAkas(akas_filename, best_serials_vec);
 
   // Display all the necessary information
   out << "Топ " << required_bests_number

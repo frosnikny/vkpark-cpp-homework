@@ -11,20 +11,20 @@
 #include "./read_files.hpp"
 #include "./tv_serial.hpp"
 
-void DurationCalculate(std::unordered_map<std::string, TVSerial>& serials,
+void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
                        std::unordered_map<std::string, int>& episode_durations,
                        int max_duration);
 
-bool RatingComparator(const TVSerialPair& a,
+bool compareRatings(const TVSerialPair& a,
                       const TVSerialPair& b);
 
-void TakeBestRatings(
+void takeBestRatings(
     const std::unordered_map<std::string, TVSerial>& serials,
     std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                        decltype(&RatingComparator)>& best_serials_pq,
+                        decltype(&compareRatings)>& best_serials_pq,
     int required_number);
 
-void RunExercise(std::ostream& out, const std::string& basics_filename,
+void runTask(std::ostream& out, const std::string& basics_filename,
                  const std::string& episodes_filename,
                  const std::string& ratings_filename,
                  const std::string& akas_filename, int max_duration,
