@@ -2,8 +2,10 @@
 
 void reportInvalidArgumentError(const std::exception& e, char* program_name) {
   std::cerr << "Error: " << e.what() << "\nUsage: " << program_name
-            << " ./my_program <basics_filename> <episodes_filename> "
-               "<ratings_filename> <akas_filename> <maximum_duration>\n"
+            << " --title-basics-path <basics_filename> "
+               "--title-episodes-path <episodes_filename> "
+               "--title-ratings-path <ratings_filename> --title-akas-path "
+               "<akas_filename> --max_duration <maximum_duration>\n"
                "where:\n"
                "  <basics_filename>      - name of file containing movie "
                "information\n"
@@ -13,7 +15,7 @@ void reportInvalidArgumentError(const std::exception& e, char* program_name) {
                "and TV series ratings\n"
                "  <akas_filename>        - name of file containing "
                "alternative titles for movies and TV series\n"
-               "  <maximum_duration>     - maximum duration of a movie or "
+               "  <maximum_duration>     - maximum duration of all series of"
                "TV series to consider (in minutes)"
             << std::endl;
   exit(1);
