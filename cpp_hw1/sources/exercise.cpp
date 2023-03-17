@@ -1,5 +1,50 @@
 #include "../headers/exercise.hpp"
 
+void runTask(std::ostream& out, const std::string& basics_filename,
+             const std::string& episodes_filename,
+             const std::string& ratings_filename,
+             const std::string& akas_filename, int max_duration,
+             int required_best_number) {
+  std::unordered_map<std::string, TVSerial> serials{};
+  std::unordered_map<std::string, int> episode_durations{};
+
+  // Take main information about serials and episodes
+  Parser::readEpisodes(episodes_filename, serials, episode_durations);
+  Parser::readSerials(basics_filename, serials, episode_durations);
+  calculateDuration(serials, episode_durations, max_duration);
+  Parser::readRatings(ratings_filename, serials);
+
+  // Take required number of the best rating episodes in descending order
+  //  typedef std::pair<std::string, TVSerial> TVSerialPair;
+  std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
+                      decltype(&compareRatings)>
+      best_serials_pq(&compareRatings);
+  takeBestRatings(serials, best_serials_pq, required_best_number);
+  std::vector<TVSerialPair> best_serials_vec(required_best_number);
+  for (int i = required_best_number - 1; i > -1; --i) {
+    best_serials_vec[i] = best_serials_pq.top();
+    best_serials_pq.pop();
+  }
+
+  // Take Russian title only for required number of serials
+  Parser::readAkas(akas_filename, best_serials_vec);
+
+  // Display all the necessary information
+  out << "Топ " << required_best_number
+      << " самых рейтинговых сериалов с суммарной длительностью всех "
+         "эпизодов, не превышающей "
+      << max_duration << " минут:\n";
+  for (int i = 0; i < required_best_number; ++i) {
+    out << i + 1 << ". ";
+    if (!best_serials_vec[i].second.ru_title.empty()) {
+      out << best_serials_vec[i].second.ru_title << " ";
+    } else {
+      out << best_serials_vec[i].second.title << " ";
+    }
+    out << " - " << best_serials_vec[i].second.avg_rating << "\n";
+  }
+}
+
 // Count the total duration of all episodes of serials
 void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
                        std::unordered_map<std::string, int>& episode_durations,
@@ -44,50 +89,5 @@ void takeBestRatings(
     if (best_serials_pq.size() > required_number) {
       best_serials_pq.pop();
     }
-  }
-}
-
-void runTask(std::ostream& out, const std::string& basics_filename,
-             const std::string& episodes_filename,
-             const std::string& ratings_filename,
-             const std::string& akas_filename, int max_duration,
-             int required_bests_number) {
-  std::unordered_map<std::string, TVSerial> serials{};
-  std::unordered_map<std::string, int> episode_durations{};
-
-  // Take main information about serials and episodes
-  Parser::readEpisodes(episodes_filename, serials, episode_durations);
-  Parser::readSerials(basics_filename, serials, episode_durations);
-  calculateDuration(serials, episode_durations, max_duration);
-  Parser::readRatings(ratings_filename, serials);
-
-  // Take required number of the best rating episodes in descending order
-  //  typedef std::pair<std::string, TVSerial> TVSerialPair;
-  std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                      decltype(&compareRatings)>
-      best_serials_pq(&compareRatings);
-  takeBestRatings(serials, best_serials_pq, required_bests_number);
-  std::vector<TVSerialPair> best_serials_vec(required_bests_number);
-  for (int i = required_bests_number - 1; i > -1; --i) {
-    best_serials_vec[i] = best_serials_pq.top();
-    best_serials_pq.pop();
-  }
-
-  // Take Russian title only for required number of serials
-  Parser::readAkas(akas_filename, best_serials_vec);
-
-  // Display all the necessary information
-  out << "Топ " << required_bests_number
-      << " самых рейтинговых сериалов с суммарной длительностью всех "
-         "эпизодов, не превышающей "
-      << max_duration << " минут:\n";
-  for (int i = 0; i < required_bests_number; ++i) {
-    out << i + 1 << ". ";
-    if (!best_serials_vec[i].second.ru_title.empty()) {
-      out << best_serials_vec[i].second.ru_title << " ";
-    } else {
-      out << best_serials_vec[i].second.title << " ";
-    }
-    out << " - " << best_serials_vec[i].second.avg_rating << "\n";
   }
 }

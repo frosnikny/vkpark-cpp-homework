@@ -1,6 +1,6 @@
 #include "../headers/errors.hpp"
 
-void reportError(const std::exception& e, char* program_name) {
+void reportInvalidArgumentError(const std::exception& e, char* program_name) {
   std::cerr << "Error: " << e.what() << "\nUsage: " << program_name
             << " ./my_program <basics_filename> <episodes_filename> "
                "<ratings_filename> <akas_filename> <maximum_duration>\n"

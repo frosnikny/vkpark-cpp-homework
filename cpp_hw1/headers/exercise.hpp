@@ -27,6 +27,6 @@ void runTask(std::ostream& out, const std::string& basics_filename,
              const std::string& episodes_filename,
              const std::string& ratings_filename,
              const std::string& akas_filename, int max_duration,
-             int required_bests_number);
+             int required_best_number);
 
 #endif  // CPP_HW1_HEADERS_EXERCISE_HPP
