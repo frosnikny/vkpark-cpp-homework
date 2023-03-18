@@ -1,14 +1,16 @@
 #include "../headers/read_files.hpp"
+#include <iostream>
 
 // function for reading episodes from title.episode.tsv
-void Parser::readEpisodes(
-    const std::string& filename,
-    std::unordered_map<std::string, TVSerial>& serials,
-    std::unordered_map<std::string, int>& episode_durations) {
+void Parser::readEpisodes(const std::string& filename,
+                          SerialsCollection& collection) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {
     throw std::invalid_argument("Cannot open file " + filename);
   }
+
+  auto& serials = collection.getSerials();
+  auto& episode_durations = collection.getEpisodeDurations();
 
   std::string line;
   // Read header
@@ -33,14 +35,15 @@ void Parser::readEpisodes(
 }
 
 // function for reading info from title.basics.tsv
-void Parser::readSerials(
-    const std::string& filename,
-    std::unordered_map<std::string, TVSerial>& serials,
-    std::unordered_map<std::string, int>& episode_durations) {
+void Parser::readSerials(const std::string& filename,
+                         SerialsCollection& collection) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {
     throw std::invalid_argument("Cannot open file " + filename);
   }
+
+  auto& serials = collection.getSerials();
+  auto& episode_durations = collection.getEpisodeDurations();
 
   std::string line;
   // Read header
@@ -102,11 +105,13 @@ void Parser::readSerials(
 
 // function for reading ratings from title.ratings.tsv
 void Parser::readRatings(const std::string& filename,
-                         std::unordered_map<std::string, TVSerial>& serials) {
+                         SerialsCollection& collection) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {
     throw std::invalid_argument("Cannot open file " + filename);
   }
+
+  auto& serials = collection.getSerials();
 
   std::string line;
   // Read header

@@ -11,17 +11,14 @@
 #include "./read_files.hpp"
 #include "./tv_serial.hpp"
 
-void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
-                       std::unordered_map<std::string, int>& episode_durations,
-                       int max_duration);
+#include <iostream>
+
+void calculateDuration(SerialsCollection& collection, int max_duration);
 
 bool compareRatings(const TVSerialPair& a, const TVSerialPair& b);
 
-void takeBestRatings(
-    const std::unordered_map<std::string, TVSerial>& serials,
-    std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                        decltype(&compareRatings)>& best_serials_pq,
-    int required_number);
+std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
+                                          int required_number);
 
 void runTask(std::ostream& out, const std::string& basics_filename,
              const std::string& episodes_filename,

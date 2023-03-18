@@ -5,30 +5,19 @@ void runTask(std::ostream& out, const std::string& basics_filename,
              const std::string& ratings_filename,
              const std::string& akas_filename, int max_duration,
              int required_best_number) {
-  std::unordered_map<std::string, TVSerial> serials{};
-  std::unordered_map<std::string, int> episode_durations{};
+  SerialsCollection collection{};
 
   // Take main information about serials and episodes
-  Parser::readEpisodes(episodes_filename, serials, episode_durations);
-  Parser::readSerials(basics_filename, serials, episode_durations);
-  calculateDuration(serials, episode_durations, max_duration);
-  Parser::readRatings(ratings_filename, serials);
+  Parser::readEpisodes(episodes_filename, collection);
+  Parser::readSerials(basics_filename, collection);
+  calculateDuration(collection, max_duration);
+  Parser::readRatings(ratings_filename, collection);
 
   // Take required number of the best rating episodes in descending order
-  //  typedef std::pair<std::string, TVSerial> TVSerialPair;
-  std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                      decltype(&compareRatings)>
-      best_serials_pq(&compareRatings);
-  takeBestRatings(serials, best_serials_pq, required_best_number);
-  std::vector<TVSerialPair> best_serials_vec(required_best_number);
-  for (int i = required_best_number - 1; i > -1; --i) {
-    best_serials_vec[i] = best_serials_pq.top();
-    best_serials_pq.pop();
-  }
+  auto best_serials_vec = takeBestRatings(collection, required_best_number);
 
   // Take Russian title only for required number of serials
   Parser::readAkas(akas_filename, best_serials_vec);
-
   // Display all the necessary information
   out << "Топ " << required_best_number
       << " самых рейтинговых сериалов с суммарной длительностью всех "
@@ -46,11 +35,12 @@ void runTask(std::ostream& out, const std::string& basics_filename,
 }
 
 // Count the total duration of all episodes of serials
-void calculateDuration(std::unordered_map<std::string, TVSerial>& serials,
-                       std::unordered_map<std::string, int>& episode_durations,
-                       int max_duration) {
+void calculateDuration(SerialsCollection& collection, int max_duration) {
+  auto& serials = collection.getSerials();
+  auto& episode_durations = collection.getEpisodeDurations();
+
   std::vector<std::string> serials_for_delete{};
-  for (auto& serial : serials) {
+  for (const auto& serial : serials) {
     int summary{0};
     for (const auto& episode_id : serial.second.episode_numbers) {
       auto current_episode_duration = episode_durations.find(episode_id);
@@ -79,15 +69,23 @@ bool compareRatings(const TVSerialPair& a, const TVSerialPair& b) {
   return a.second.avg_rating > b.second.avg_rating;
 }
 
-void takeBestRatings(
-    const std::unordered_map<std::string, TVSerial>& serials,
-    std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
-                        decltype(&compareRatings)>& best_serials_pq,
-    int required_number) {
-  for (auto& elem : serials) {
+std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
+                                          int required_number) {
+  std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
+                      decltype(&compareRatings)>
+      best_serials_pq (compareRatings);
+  const auto& serials = collection.getSerials();
+  for (const auto& elem : serials) {
     best_serials_pq.emplace(elem.first, elem.second);
     if (best_serials_pq.size() > required_number) {
       best_serials_pq.pop();
     }
   }
+
+  std::vector<TVSerialPair> best_serials_vec(required_number);
+  for (int i = required_number - 1; i > -1; --i) {
+    best_serials_vec[i] = best_serials_pq.top();
+    best_serials_pq.pop();
+  }
+  return std::move(best_serials_vec);
 }
