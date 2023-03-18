@@ -11,8 +11,6 @@
 #include "./read_files.hpp"
 #include "./tv_serial.hpp"
 
-#include <iostream>
-
 void calculateDuration(SerialsCollection& collection, int max_duration);
 
 bool compareRatings(const TVSerialPair& a, const TVSerialPair& b);

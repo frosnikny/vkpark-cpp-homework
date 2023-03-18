@@ -73,7 +73,7 @@ std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
                                           int required_number) {
   std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
                       decltype(&compareRatings)>
-      best_serials_pq (compareRatings);
+      best_serials_pq(compareRatings);
   const auto& serials = collection.getSerials();
   for (const auto& elem : serials) {
     best_serials_pq.emplace(elem.first, elem.second);
