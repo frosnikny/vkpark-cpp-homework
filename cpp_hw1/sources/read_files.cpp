@@ -148,7 +148,7 @@ void Parser::readRatings(const std::string& filename,
 
 // function for reading episodes from title.akas.tsv
 void Parser::readAkas(const std::string& filename,
-                      std::vector<TVSerialPair>& serials) {
+                      std::vector<SerialsCollection::TVSerialPair>& serials) {
   std::ifstream file(filename, std::ios::binary);
   if (!file.is_open()) {
     throw std::invalid_argument("Cannot open file " + filename);
@@ -172,10 +172,11 @@ void Parser::readAkas(const std::string& filename,
   while (std::getline(file, line)) {
     std::istringstream line_stream(line);
     std::getline(line_stream, serial_id, '\t');
-    const auto& current_serial = std::find_if(
-        serials.begin(), serials.end(), [serial_id](const TVSerialPair& item) {
-          return item.first == serial_id;
-        });
+    const auto& current_serial =
+        std::find_if(serials.begin(), serials.end(),
+                     [serial_id](const SerialsCollection::TVSerialPair& item) {
+                       return item.first == serial_id;
+                     });
     if (current_serial == serials.end()) {
       continue;
     }

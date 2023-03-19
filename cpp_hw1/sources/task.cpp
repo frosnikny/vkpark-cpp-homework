@@ -65,13 +65,15 @@ void calculateDuration(SerialsCollection& collection, int max_duration) {
   }
 }
 
-bool compareRatings(const TVSerialPair& a, const TVSerialPair& b) {
+bool compareRatings(const SerialsCollection::TVSerialPair& a,
+                    const SerialsCollection::TVSerialPair& b) {
   return a.second.avg_rating > b.second.avg_rating;
 }
 
-std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
-                                          int required_number) {
-  std::priority_queue<TVSerialPair, std::vector<TVSerialPair>,
+std::vector<SerialsCollection::TVSerialPair> takeBestRatings(
+    const SerialsCollection& collection, int required_number) {
+  std::priority_queue<SerialsCollection::TVSerialPair,
+                      std::vector<SerialsCollection::TVSerialPair>,
                       decltype(&compareRatings)>
       best_serials_pq(compareRatings);
   const auto& serials = collection.getSerials();
@@ -82,7 +84,8 @@ std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
     }
   }
 
-  std::vector<TVSerialPair> best_serials_vec(required_number);
+  std::vector<SerialsCollection::TVSerialPair> best_serials_vec(
+      required_number);
   for (int i = required_number - 1; i > -1; --i) {
     best_serials_vec[i] = best_serials_pq.top();
     best_serials_pq.pop();

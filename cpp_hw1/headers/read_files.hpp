@@ -27,7 +27,7 @@ class Parser {
 
   // function for reading episodes from title.akas.tsv
   static void readAkas(const std::string& filename,
-                       std::vector<TVSerialPair>& serials);
+                       std::vector<SerialsCollection::TVSerialPair>& serials);
 };
 
 #endif  // CPP_HW1_HEADERS_READ_FILES_HPP

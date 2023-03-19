@@ -13,10 +13,11 @@
 
 void calculateDuration(SerialsCollection& collection, int max_duration);
 
-bool compareRatings(const TVSerialPair& a, const TVSerialPair& b);
+bool compareRatings(const SerialsCollection::TVSerialPair& a,
+                    const SerialsCollection::TVSerialPair& b);
 
-std::vector<TVSerialPair> takeBestRatings(const SerialsCollection& collection,
-                                          int required_number);
+std::vector<SerialsCollection::TVSerialPair> takeBestRatings(
+    const SerialsCollection& collection, int required_number);
 
 void runTask(std::ostream& out, const std::string& basics_filename,
              const std::string& episodes_filename,

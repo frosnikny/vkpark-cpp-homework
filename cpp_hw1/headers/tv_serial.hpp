@@ -16,10 +16,9 @@ struct TVSerial {
 
 // Contains information about TVSerials from files
 class SerialsCollection {
-  std::unordered_map<std::string, TVSerial> serials_{};
-  std::unordered_map<std::string, int> episode_durations_{};
-
  public:
+  typedef std::pair<std::string, TVSerial> TVSerialPair;
+
   std::unordered_map<std::string, TVSerial>& getSerials() { return serials_; }
 
   const std::unordered_map<std::string, TVSerial>& getSerials() const {
@@ -33,8 +32,10 @@ class SerialsCollection {
   const std::unordered_map<std::string, int>& getEpisodeDurations() const {
     return episode_durations_;
   }
-};
 
-typedef std::pair<std::string, TVSerial> TVSerialPair;
+ private:
+  std::unordered_map<std::string, TVSerial> serials_{};
+  std::unordered_map<std::string, int> episode_durations_{};
+};
 
 #endif  // CPP_HW1_HEADERS_TV_SERIAL_HPP
