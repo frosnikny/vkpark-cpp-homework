@@ -90,6 +90,8 @@ cpp_hw1/build
 cpp_hw1/cmake-build-debug/
 
 # Lab-2
+# Directories for tests
+cpp_hw2/examples
 cpp_hw2/build
 # CMake
 cpp_hw2/cmake-build-debug/
