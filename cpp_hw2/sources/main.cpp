@@ -1,8 +1,5 @@
-#include <map>
 #include <stack>
-#include <utility>
 
-#include "arg_utils.hpp"
 #include "task.hpp"
 
 int main(int argc, char* argv[]) {
@@ -11,9 +8,7 @@ int main(int argc, char* argv[]) {
   }
   std::string arguments_str(argv[1]);
   try {
-    std::stack<std::pair<std::string, std::string>> arguments =
-        take_args(arguments_str);
-    runTask(arguments);
+    runTask(arguments_str);
   } catch (std::exception&(e)) {
     std::cerr << "An error occurred while the program was running\n"
               << e.what() << "\n";

@@ -1,16 +1,10 @@
 #ifndef CPP_HW2_TASK_HPP
 #define CPP_HW2_TASK_HPP
 
-#include <memory>
-#include <stack>
 #include <string>
-#include <utility>
 
-#include "operations/cat.hpp"
-#include "operations/cut.hpp"
-#include "operations/echo.hpp"
-#include "operations/i_operation.hpp"
+#include "conveyor_parser.hpp"
 
-void runTask(std::stack<std::pair<std::string, std::string>> arguments);
+void runTask(const std::string& arguments_str);
 
 #endif  // CPP_HW2_TASK_HPP
