@@ -1,4 +1,4 @@
-#include "../headers/task.hpp"
+#include "task.hpp"
 
 void runTask(std::stack<std::pair<std::string, std::string>> arguments) {
   std::unique_ptr<IOperation> previous_operation{nullptr};

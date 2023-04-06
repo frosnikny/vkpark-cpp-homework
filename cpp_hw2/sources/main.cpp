@@ -2,8 +2,8 @@
 #include <stack>
 #include <utility>
 
-#include "../headers/arg_utils.hpp"
-#include "../headers/task.hpp"
+#include "arg_utils.hpp"
+#include "task.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc != 2) {

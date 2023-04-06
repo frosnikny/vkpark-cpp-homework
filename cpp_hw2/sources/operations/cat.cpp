@@ -1,4 +1,4 @@
-#include "../../headers/operations/cat.hpp"
+#include "operations/cat.hpp"
 
 Cat::Cat(const std::string& file_name) {
   std::ifstream file(file_name);

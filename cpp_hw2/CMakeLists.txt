@@ -3,4 +3,8 @@ project(cpp_hw2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(cpp_hw2 sources/main.cpp sources/operations/cat.cpp headers/operations/cat.hpp headers/operations/i_operation.hpp sources/operations/echo.cpp headers/operations/echo.hpp sources/operations/cut.cpp headers/operations/cut.hpp sources/arg_utils.cpp headers/arg_utils.hpp sources/task.cpp headers/task.hpp)
+set(INCLUDE_DIR headers)
+include_directories(${INCLUDE_DIR})
+set(HEADER_FILES ${INCLUDE_DIR}/operations/cat.hpp ${INCLUDE_DIR}/operations/i_operation.hpp ${INCLUDE_DIR}/operations/echo.hpp ${INCLUDE_DIR}/operations/cut.hpp ${INCLUDE_DIR}/arg_utils.hpp ${INCLUDE_DIR}/task.hpp)
+
+add_executable(cpp_hw2 ${HEADER_FILES} sources/main.cpp sources/operations/cat.cpp sources/operations/echo.cpp sources/operations/cut.cpp sources/arg_utils.cpp sources/task.cpp)

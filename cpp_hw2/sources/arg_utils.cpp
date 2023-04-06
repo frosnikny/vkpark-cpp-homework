@@ -1,4 +1,4 @@
-#include "../headers/arg_utils.hpp"
+#include "arg_utils.hpp"
 
 std::pair<std::string, std::string> separate_spaces(const std::string& str) {
   std::size_t space_pos = str.find(' ');
