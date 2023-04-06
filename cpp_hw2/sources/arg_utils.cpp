@@ -15,13 +15,13 @@ std::pair<std::string, std::string> separate_spaces(const std::string& str) {
 
 std::stack<std::pair<std::string, std::string>> take_args(
     const std::string& argv) {
-  std::stack<std::pair<std::string, std::string>> arguments{};
+  std::stack<std::pair<std::string, std::string>> arguments;
   std::string arguments_str(argv);
-  std::string command_str{};
-  std::string command{};
-  std::string argument{};
+  std::string command_str;
+  std::string command;
+  std::string argument;
   std::string delimiter(" | ");
-  size_t delimiter_pos{};
+  size_t delimiter_pos = 0;
   while ((delimiter_pos = arguments_str.find(delimiter)) != std::string::npos) {
     command_str = arguments_str.substr(0, delimiter_pos);
 

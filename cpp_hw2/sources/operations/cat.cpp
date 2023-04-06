@@ -5,7 +5,7 @@ Cat::Cat(const std::string& file_name) {
   if (!file.is_open()) {
     throw std::invalid_argument("Invalid file path passed");
   }
-  std::string line{};
+  std::string line;
   while (getline(file, line)) {
     own_data_.push(line);
     file.close();

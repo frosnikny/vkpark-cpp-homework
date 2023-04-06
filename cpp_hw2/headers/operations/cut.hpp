@@ -17,8 +17,8 @@ class Cut : public IOperation {
   void setNextOperation(std::unique_ptr<IOperation> next_operation) override;
 
  private:
-  size_t word_number_{};
-  std::queue<std::string> input_convert_data_{};
+  size_t word_number_;
+  std::queue<std::string> input_convert_data_;
   std::unique_ptr<IOperation> next_operation_{nullptr};
 };
 

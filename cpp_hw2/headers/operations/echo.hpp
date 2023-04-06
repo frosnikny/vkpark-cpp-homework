@@ -16,7 +16,7 @@ class Echo : public IOperation {
   void setNextOperation(std::unique_ptr<IOperation> next_operation) override;
 
  private:
-  std::string own_data_{};
+  std::string own_data_;
   std::unique_ptr<IOperation> next_operation_{nullptr};
 };
 

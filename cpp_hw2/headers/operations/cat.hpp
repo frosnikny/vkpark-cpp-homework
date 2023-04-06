@@ -18,8 +18,8 @@ class Cat : public IOperation {
   void setNextOperation(std::unique_ptr<IOperation> next_operation) override;
 
  private:
-  std::queue<std::string> own_data_{};
-  std::queue<std::string> input_data_{};
+  std::queue<std::string> own_data_;
+  std::queue<std::string> input_data_;
   std::unique_ptr<IOperation> next_operation_{nullptr};
 };
 

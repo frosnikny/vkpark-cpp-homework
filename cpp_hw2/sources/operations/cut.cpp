@@ -1,7 +1,7 @@
 #include "operations/cut.hpp"
 
 void Cut::processLine(const std::string& input_str) {
-  std::string word{};
+  std::string word;
   size_t word_count = 0;
   std::istringstream str_stream(input_str);
   while (!str_stream.eof()) {
