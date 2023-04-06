@@ -14,8 +14,10 @@ int main(int argc, char* argv[]) {
     std::stack<std::pair<std::string, std::string>> arguments =
         take_args(arguments_str);
     runTask(arguments);
-  } catch (std::exception&) {
-    throw;
+  } catch (std::exception&(e)) {
+    std::cerr << "An error occurred while the program was running\n"
+              << e.what() << "\n";
+    return 1;
   }
   return 0;
 }
