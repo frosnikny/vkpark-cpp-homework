@@ -35,6 +35,9 @@ std::pair<std::string, std::string> Conveyor::separateSpaces(
   if (argument.empty()) {
     throw std::invalid_argument("The command was passed without an argument");
   }
+  if (argument.find(' ') != std::string::npos) {
+    throw std::invalid_argument("The command argument contains extra spaces");
+  }
   return std::make_pair(command, argument);
 }
 
@@ -42,15 +45,12 @@ void Conveyor::addOperation(const std::string& command_str) {
   std::pair<std::string, std::string> command_item =
       separateSpaces(command_str);
   if (command_item.first == "cat") {
-    std::unique_ptr<Cat> cat = std::make_unique<Cat>(command_item.second);
-    operations_.push(std::move(cat));
+    operations_.emplace(std::make_unique<Cat>(command_item.second));
   } else if (command_item.first == "echo") {
-    std::unique_ptr<Echo> echo = std::make_unique<Echo>(command_item.second);
-    operations_.push(std::move(echo));
+    operations_.emplace(std::make_unique<Echo>(command_item.second));
   } else if (command_item.first == "cut") {
     int n = std::stoi(command_item.second);
-    std::unique_ptr<Cut> cut = std::make_unique<Cut>(n);
-    operations_.push(std::move(cut));
+    operations_.emplace(std::make_unique<Cut>(n));
   } else {
     throw std::invalid_argument("Invalid command passed");
   }
