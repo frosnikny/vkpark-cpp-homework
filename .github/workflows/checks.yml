@@ -49,7 +49,7 @@ jobs:
 
       - name: Run Valgrind
         run: |
-          valgrind --leak-check=full -q ./cpp_executable/cpp_hw2 'echo Hello | cat examples/text.txt | cut 2'
+          valgrind --leak-check=full -q ./cpp_executable/cpp_hw2 'echo Hello | cat cpp_hw2/examples/text.txt | cut 2'
           EXIT_STATUS=$?
           if [ $EXIT_STATUS -eq 0 ]; then
           # программа завершена успешно без утечек памяти
