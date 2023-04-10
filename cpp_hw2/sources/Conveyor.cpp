@@ -1,6 +1,6 @@
-#include "conveyor_parser.hpp"
+#include "Conveyor.hpp"
 
-void ConveyorParser::parse(std::string arguments_str) {
+void Conveyor::buildFromString(std::string arguments_str) {
   std::stack<std::pair<std::string, std::string>> arguments;
   std::string command_str;
   std::string delimiter(" | ");
@@ -13,7 +13,7 @@ void ConveyorParser::parse(std::string arguments_str) {
   addOperation(arguments_str);
 }
 
-void ConveyorParser::process() {
+void Conveyor::process() {
   std::unique_ptr<IOperation> previous_operation{nullptr};
   while (!operations_.empty()) {
     std::unique_ptr<IOperation> operation = std::move(operations_.top());
@@ -24,7 +24,7 @@ void ConveyorParser::process() {
   previous_operation->handleEndOfInput();
 }
 
-std::pair<std::string, std::string> ConveyorParser::separateSpaces(
+std::pair<std::string, std::string> Conveyor::separateSpaces(
     const std::string& str) {
   std::size_t space_pos = str.find(' ');
   if (space_pos == std::string::npos) {
@@ -38,7 +38,7 @@ std::pair<std::string, std::string> ConveyorParser::separateSpaces(
   return std::make_pair(command, argument);
 }
 
-void ConveyorParser::addOperation(const std::string& command_str) {
+void Conveyor::addOperation(const std::string& command_str) {
   std::pair<std::string, std::string> command_item =
       separateSpaces(command_str);
   if (command_item.first == "cat") {

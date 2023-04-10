@@ -1,5 +1,5 @@
-#ifndef CPP_HW2_CONVEYOR_PARSER_HPP
-#define CPP_HW2_CONVEYOR_PARSER_HPP
+#ifndef CPP_HW2_CONVEYOR_HPP
+#define CPP_HW2_CONVEYOR_HPP
 
 #include <memory>
 #include <stack>
@@ -11,9 +11,9 @@
 #include "operations/Echo.hpp"
 #include "operations/IOperation.hpp"
 
-class ConveyorParser {
+class Conveyor {
  public:
-  void parse(std::string arguments_str);
+  void buildFromString(std::string arguments_str);
 
   void process();
 
@@ -26,4 +26,4 @@ class ConveyorParser {
   std::stack<std::unique_ptr<IOperation>> operations_;
 };
 
-#endif  // CPP_HW2_CONVEYOR_PARSER_HPP
+#endif  // CPP_HW2_CONVEYOR_HPP
