@@ -1,0 +1,100 @@
+name: C++ CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build code
+        run: |
+          cd cpp_hw2
+          mkdir build
+          cd build 
+          cmake ..
+          make
+        shell: bash
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: cpp_executable
+          path: cpp_hw2/build/cpp_hw2
+
+  dynamic-analysis:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Valgrind
+        run: sudo apt-get install valgrind
+
+      - name: Download executable
+        uses: actions/download-artifact@v3
+        with:
+          name: cpp_executable
+          path: ./cpp_executable
+
+      - name: Check folder
+        run: chmod +x ./cpp_executable/cpp_hw2
+
+      - name: Run Valgrind
+        run: |
+          valgrind --leak-check=full -q ./cpp_executable/cpp_hw2 'echo Hello | cat cpp_hw2/examples/text.txt | cut 2'
+          EXIT_STATUS=$?
+          if [ $EXIT_STATUS -eq 0 ]; then
+          # программа завершена успешно без утечек памяти
+            echo "Tests passed"
+          elif [ $EXIT_STATUS -eq 1 ]; then
+          # программа завершена с ошибкой, но без утечек памяти
+            echo "Tests failed, but no memory leaks detected"
+          else
+          # программа завершена с ошибкой по другой причине
+            echo "Tests failed"
+            exit $EXIT_STATUS
+          fi
+        shell: bash
+
+      - name: Upload Valgrind results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: valgrind-results
+          path: valgrind-results.txt
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Cppcheck
+        run: sudo apt-get install cppcheck
+
+      - name: Run Cppcheck
+        run: cppcheck --enable=all --suppress=missingInclude --include=headers .
+        id: cppcheck
+
+      - name: Upload Cppcheck results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cppcheck-results
+          path: cppcheck-results.xml
+
+      - name: Install Clang-Format
+        run: sudo apt-get install clang-format
+
+      - name: Run Clang-Format
+        run: |
+          cd cpp_hw2
+          clang-format -style=file -output-replacements-xml sources/*.cpp headers/*.hpp | grep -c "<replacement " >/dev/null && echo "Code formatting issues found" && exit 1 || echo "Code is properly formatted"
+        shell: bash
