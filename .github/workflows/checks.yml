@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: cpp_executable
-          path: build/cpp_hw2
+          path: cpp_hw2/build/cpp_hw2
 
   dynamic-analysis:
     needs: build
@@ -37,9 +37,6 @@ jobs:
 
       - name: Install Valgrind
         run: sudo apt-get install valgrind
-
-      - name: Test
-        run: cd cpp_hw2
 
       - name: Download executable
         uses: actions/download-artifact@v3
