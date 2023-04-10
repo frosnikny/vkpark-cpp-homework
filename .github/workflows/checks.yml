@@ -16,6 +16,7 @@ jobs:
 
       - name: Build code
         run: |
+          cd cpp_hw2
           mkdir build
           cd build 
           cmake ..
