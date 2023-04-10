@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "i_operation.hpp"
+#include "IOperation.hpp"
 
 class Cat : public IOperation {
  public:

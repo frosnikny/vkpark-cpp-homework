@@ -1,4 +1,4 @@
-#include "operations/cut.hpp"
+#include "operations/Cut.hpp"
 
 void Cut::processLine(const std::string& input_str) {
   std::string word;

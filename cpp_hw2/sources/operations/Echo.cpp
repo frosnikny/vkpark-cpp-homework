@@ -1,4 +1,4 @@
-#include "operations/echo.hpp"
+#include "operations/Echo.hpp"
 
 void Echo::handleEndOfInput() {
   if (next_operation_ == nullptr) {

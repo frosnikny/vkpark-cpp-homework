@@ -1,4 +1,4 @@
-#include "operations/cat.hpp"
+#include "operations/Cat.hpp"
 
 Cat::Cat(const std::string& file_name) {
   std::ifstream file(file_name);
@@ -8,8 +8,8 @@ Cat::Cat(const std::string& file_name) {
   std::string line;
   while (getline(file, line)) {
     own_data_.push(line);
-    file.close();
   }
+  file.close();
 }
 
 void Cat::processLine(const std::string& input_str) {

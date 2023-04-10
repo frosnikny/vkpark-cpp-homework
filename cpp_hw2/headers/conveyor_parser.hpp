@@ -6,10 +6,10 @@
 #include <string>
 #include <utility>
 
-#include "operations/cat.hpp"
-#include "operations/cut.hpp"
-#include "operations/echo.hpp"
-#include "operations/i_operation.hpp"
+#include "operations/Cat.hpp"
+#include "operations/Cut.hpp"
+#include "operations/Echo.hpp"
+#include "operations/IOperation.hpp"
 
 class ConveyorParser {
  public:

@@ -1,5 +1,5 @@
-#ifndef CPP_HW2_I_OPERATION_HPP
-#define CPP_HW2_I_OPERATION_HPP
+#ifndef CPP_HW2_IOPERATION_HPP
+#define CPP_HW2_IOPERATION_HPP
 
 #include <memory>
 #include <string>
@@ -12,4 +12,4 @@ class IOperation {
   virtual ~IOperation() = default;
 };
 
-#endif  // CPP_HW2_I_OPERATION_HPP
+#endif  // CPP_HW2_IOPERATION_HPP

@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "i_operation.hpp"
+#include "IOperation.hpp"
 
 class Cut : public IOperation {
  public:
