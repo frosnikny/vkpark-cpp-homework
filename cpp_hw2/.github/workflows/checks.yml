@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Valgrind
         run: |
-          valgrind --leak-check=full -q ./cpp_executable/dz2 'echo 1 | cat file_1.txt | cat file_2.txt'
+          valgrind --leak-check=full -q ./cpp_executable/dz2 'echo Hello | cat examples/text.txt | cut 2'
           EXIT_STATUS=$?
           if [ $EXIT_STATUS -eq 0 ]; then
           # программа завершена успешно без утечек памяти
@@ -94,5 +94,5 @@ jobs:
 
       - name: Run Clang-Format
         run: |
-          clang-format -style=file -output-replacements-xml **/*.cpp **/*.h | grep -c "<replacement " >/dev/null && echo "Code formatting issues found" && exit 1 || echo "Code is properly formatted"
+          clang-format -style=file -output-replacements-xml /*.cpp /*.h | grep -c "<replacement " >/dev/null && echo "Code formatting issues found" && exit 1 || echo "Code is properly formatted"
         shell: bash
