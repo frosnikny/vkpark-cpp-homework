@@ -77,7 +77,7 @@ _deps
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion,cmake
 
 # Clang-format
-*.clang-format
+cpp_hw1/.clang-format
 
 # idea
 .idea

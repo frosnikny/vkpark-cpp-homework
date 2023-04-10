@@ -80,7 +80,7 @@ jobs:
         run: sudo apt-get install cppcheck
 
       - name: Run Cppcheck
-        run: cppcheck --enable=all --suppress=missingInclude --include=include .
+        run: cppcheck --enable=all --suppress=missingInclude --include=cpp_hw2/include .
         id: cppcheck
 
       - name: Upload Cppcheck results
@@ -95,5 +95,5 @@ jobs:
 
       - name: Run Clang-Format
         run: |
-          clang-format -style=file -output-replacements-xml /*.cpp /*.h | grep -c "<replacement " >/dev/null && echo "Code formatting issues found" && exit 1 || echo "Code is properly formatted"
+          clang-format -style=file -output-replacements-xml cpp_hw2/*.cpp cpp_hw2/*.h | grep -c "<replacement " >/dev/null && echo "Code formatting issues found" && exit 1 || echo "Code is properly formatted"
         shell: bash
